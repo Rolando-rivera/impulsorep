@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: impulsorep-web
+    env: node
+    buildCommand: npm --prefix frontend install --include=dev && npm --prefix frontend run build && npm --prefix backend install
+    startCommand: npm --prefix backend start
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_SSL
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
