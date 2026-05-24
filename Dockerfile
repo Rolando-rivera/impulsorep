@@ -1,4 +1,4 @@
-# Impulso REP - Deploy en Koyeb con PostgreSQL externo en Neon
+# Impulso REP - Deploy en Render con PostgreSQL externo en Neon
 # Etapa 1: compila el frontend Vue/Vite
 FROM node:22-alpine AS frontend-builder
 

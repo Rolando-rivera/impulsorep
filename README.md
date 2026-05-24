@@ -7,16 +7,17 @@ El proyecto usa:
 - Frontend: Vue 3 + Vite + Bootstrap 5
 - Backend: Node.js + Express
 - Base de datos: PostgreSQL
-- Despliegue recomendado: Koyeb + Neon PostgreSQL
+- Despliegue recomendado: Render + Neon PostgreSQL
 
 ## Estructura
 
 ```txt
-backend/     API Express y conexión PostgreSQL
-frontend/    Interfaz Vue 3
-sql/         Script de creación e inicialización de base de datos
-docs/        Guías de conexión, GitHub y despliegue
-Dockerfile   Configuración para Koyeb
+backend/      API Express y conexión PostgreSQL
+frontend/     Interfaz Vue 3
+sql/          Script de creación e inicialización de base de datos
+docs/         Guías de conexión, GitHub y despliegue
+Dockerfile    Configuración para desplegar la app completa
+render.yaml   Blueprint opcional para Render
 ```
 
 ## Usuarios demo
@@ -99,17 +100,20 @@ npm install
 npm run dev
 ```
 
-## Despliegue en Koyeb + Neon
+## Despliegue en Render + Neon
 
-El proyecto incluye un `Dockerfile` en la raíz para desplegar la app completa en Koyeb.
+Esta versión está preparada para usar Render como hosting y Neon como PostgreSQL externo.
 
-En Koyeb usar:
+En Render usar:
 
 ```txt
-Builder: Dockerfile
-Root directory: vacío
-Dockerfile path: Dockerfile
-Exposed port: 3000
+New + > Web Service
+Repository: Rolando-rivera/impulsorep
+Branch: main
+Runtime / Language: Docker
+Root Directory: vacío
+Dockerfile path: ./Dockerfile
+Plan: Free
 ```
 
 Variables de entorno requeridas:
@@ -126,5 +130,6 @@ PORT=3000
 Más detalle en:
 
 ```txt
-docs/03_desplegar_en_koyeb_neon.md
+GUIA_RAPIDA_RENDER_NEON.md
+docs/03_desplegar_en_render_neon.md
 ```
