@@ -1,73 +1,130 @@
 # Impulso REP
 
-Este es el proyecto que desarrollé para mi título. La solución busca registrar, validar y trazar digitalmente residuos prioritarios bajo la Ley N° 20.920 y normativa asociada, incorporando perfiles diferenciados, reglas automáticas, alertas preventivas y auditoría de eventos.
+Plataforma académica para registro, validación y trazabilidad de residuos prioritarios bajo el marco de la Ley REP en Chile.
 
-## Enlaces públicos
-- Aplicación desplegada: https://impulsorep.onrender.com
-- Repositorio público: https://github.com/Rolando-rivera/impulsorep
+El proyecto usa:
 
-## Qué dejé funcionando
-- Frontend en **Vue 3 + Vite** con **Bootstrap 5 + CSS propio de apoyo**.
-- Backend en **Node.js + Express** con API REST.
-- Persistencia en **PostgreSQL**.
-- Login demo con perfiles **Administrador**, **Gestor** y **Productor**.
-- CRUD de **declaraciones REP**, **categorías REP** y **metas anuales**.
-- Gestión de **reglas**, **alertas** y **auditoría**.
-- Despliegue en **Render** usando la base de datos creada en la entrega anterior.
+- Frontend: Vue 3 + Vite + Bootstrap 5
+- Backend: Node.js + Express
+- Base de datos: PostgreSQL
+- Despliegue recomendado: Koyeb + Neon PostgreSQL
 
-## Orden del repositorio
-- `frontend/`: interfaz Vue 3 + Vite.
-- `backend/`: API, conexión a PostgreSQL y servicio estático del build.
-- `sql/01_ley_rep_schema.sql`: script de creación y carga base.
-- `docs/`: guía ordenada para conectar la base, subir a GitHub y desplegar.
-- `render.yaml`: configuración sugerida para Render.
+## Estructura
 
-
-## Marco legal incorporado
-La aplicación incluye una sección **Marco Ley REP** con resumen del objeto de la Ley N° 20.920, principios de trazabilidad, actores regulados, productos prioritarios, obligaciones del productor y flujo operativo de declaración-validación-auditoría.
-
-Fuentes de referencia usadas para el contenido normativo:
-- Biblioteca del Congreso Nacional: Ley N° 20.920.
-- Ministerio del Medio Ambiente: Economía Circular / Ley REP.
-- RETC: requerimientos de información para productores regulados por Ley REP.
+```txt
+backend/     API Express y conexión PostgreSQL
+frontend/    Interfaz Vue 3
+sql/         Script de creación e inicialización de base de datos
+docs/        Guías de conexión, GitHub y despliegue
+Dockerfile   Configuración para Koyeb
+```
 
 ## Usuarios demo
-- Administrador: `admin@impulsorep.cl` / `admin123`
-- Gestor: `gestor@impulsorep.cl` / `gestor123`
-- Productor: `productor@impulsorep.cl` / `productor123`
 
-## Pasos rápidos para reutilizar la base de datos ya creada
-1. Tomar la **External Database URL** de la base PostgreSQL que ya dejé creada en Render.
-2. Copiar esa URL en `backend/.env` usando la variable `DATABASE_URL`.
-3. Dejar `DATABASE_SSL=true`.
-4. Si la base ya tiene las tablas de este proyecto, puedo usarla directamente.
-5. Si necesito recrear la estructura o cargar datos base, ejecuto `sql/01_ley_rep_schema.sql` sobre esa misma base.
+```txt
+admin@impulsorep.cl / admin123
+gestor@impulsorep.cl / gestor123
+productor@impulsorep.cl / productor123
+```
 
-## Desarrollo local
-### Backend
-```bash
+## Ejecución local con PostgreSQL local
+
+Crear una base llamada `ley_rep` en PostgreSQL y ejecutar:
+
+```txt
+sql/01_ley_rep_schema.sql
+```
+
+Luego configurar `backend/.env`:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=TU_CLAVE
+DB_NAME=ley_rep
+DATABASE_SSL=false
+PORT=3000
+SESSION_SECRET=impulsorep_local
+```
+
+Levantar backend:
+
+```cmd
 cd backend
 npm install
-cp .env.example .env
-# completar DATABASE_URL con la base ya creada o una base local
 npm start
 ```
 
-### Frontend
-```bash
+Levantar frontend:
+
+```cmd
 cd frontend
 npm install
 npm run dev
 ```
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:3000`
+Abrir:
 
-## Deploy sugerido
-La guía completa quedó separada por pasos:
-- `docs/01_conectar_base_existente.md`
-- `docs/02_subir_a_github.md`
-- `docs/03_desplegar_en_render.md`
+```txt
+http://localhost:5173
+```
 
-## Nota
-Si voy a reutilizar la base de datos ya creada en una entrega anterior, no necesito crear otra. Solo debo volver a usar la misma `DATABASE_URL` y asegurarme de que el esquema esté cargado.
+## Ejecución local usando Neon
+
+Configurar `backend/.env` con el connection string de Neon:
+
+```env
+DATABASE_URL=postgresql://USUARIO:CLAVE@HOST/neondb?sslmode=require
+DATABASE_SSL=true
+DATABASE_INIT=true
+PORT=3000
+SESSION_SECRET=impulsorep_local
+```
+
+Luego ejecutar:
+
+```cmd
+cd backend
+npm install
+node initDb.js
+npm start
+```
+
+En otra terminal:
+
+```cmd
+cd frontend
+npm install
+npm run dev
+```
+
+## Despliegue en Koyeb + Neon
+
+El proyecto incluye un `Dockerfile` en la raíz para desplegar la app completa en Koyeb.
+
+En Koyeb usar:
+
+```txt
+Builder: Dockerfile
+Root directory: vacío
+Dockerfile path: Dockerfile
+Exposed port: 3000
+```
+
+Variables de entorno requeridas:
+
+```env
+DATABASE_URL=postgresql://USUARIO:CLAVE@HOST/neondb?sslmode=require
+DATABASE_SSL=true
+DATABASE_INIT=true
+SESSION_SECRET=impulsorep_cambiar_por_un_texto_largo
+NODE_ENV=production
+PORT=3000
+```
+
+Más detalle en:
+
+```txt
+docs/03_desplegar_en_koyeb_neon.md
+```
